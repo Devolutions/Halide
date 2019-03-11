@@ -464,7 +464,8 @@ std::unique_ptr<llvm::TargetMachine> make_target_machine(const llvm::Module &mod
 #else
                                                 llvm::CodeModel::Small,
 #endif
-                                                llvm::CodeGenOpt::Aggressive));
+                                                llvm::CodeGenOpt::Aggressive,
+                                                true));
 }
 
 void set_function_attributes_for_target(llvm::Function *fn, Target t) {
