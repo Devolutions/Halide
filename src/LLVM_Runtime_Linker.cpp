@@ -373,6 +373,14 @@ llvm::Triple get_triple_for_target(const Target &target) {
         } else if (target.os == Target::Linux) {
             triple.setOS(llvm::Triple::Linux);
             triple.setEnvironment(llvm::Triple::GNUEABIHF);
+        } else if (target.os == Target::Windows) {
+            triple.setVendor(llvm::Triple::PC);
+            triple.setOS(llvm::Triple::Win32);
+            triple.setEnvironment(llvm::Triple::MSVC);
+            if (target.has_feature(Target::JIT)) {
+                // Use ELF for jitting
+                triple.setObjectFormat(llvm::Triple::ELF);
+            }
         } else {
             user_error << "No arm support for this OS\n";
         }
