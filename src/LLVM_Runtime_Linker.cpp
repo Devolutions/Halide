@@ -376,12 +376,15 @@ llvm::Triple get_triple_for_target(const Target &target) {
             triple.setOS(llvm::Triple::Linux);
             triple.setEnvironment(llvm::Triple::GNUEABIHF);
         } else if (target.os == Target::Windows) {
+            user_assert(target.bits == 64) << "Windows ARM targets must be 64-bit.\n";
             triple.setVendor(llvm::Triple::PC);
             triple.setOS(llvm::Triple::Win32);
             triple.setEnvironment(llvm::Triple::MSVC);
             if (target.has_feature(Target::JIT)) {
                 // Use ELF for jitting
-                triple.setObjectFormat(llvm::Triple::ELF);
+                // TODO(shoaibkamil): figure out a way to test this.
+                // Currently blocked by https://github.com/halide/Halide/issues/5040
+                user_error << "No JIT support for this OS/CPU combination yet.\n";
             }
         } else {
             user_error << "No arm support for this OS\n";
